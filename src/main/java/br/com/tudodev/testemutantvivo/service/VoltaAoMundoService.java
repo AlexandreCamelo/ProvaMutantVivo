@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.tudodev.testemutantvivo.models.MelhorTempoHeroiDTO;
@@ -147,7 +148,8 @@ public class VoltaAoMundoService {
 		}
 	}
 
-	public MelhorTempoHeroiDTO melhorVoltaHeroi(String codHeroi) {
+	public ResponseEntity<MelhorTempoHeroiDTO> melhorVoltaHeroi(
+			String codHeroi) {
 		try {
 			log.warn("O código do herói é: " + codHeroi);
 			List<Volta> todasAsVoltas = leArquivo();
@@ -159,11 +161,11 @@ public class VoltaAoMundoService {
 			ModelMapper modelMapper = new ModelMapper();
 			MelhorTempoHeroiDTO melhorTempoHeroiDTO = modelMapper
 					.map(melhores.get(0), MelhorTempoHeroiDTO.class);
-			return melhorTempoHeroiDTO;
+			return ResponseEntity.status(200).body(melhorTempoHeroiDTO);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			log.warn("O herói de código " + codHeroi + " não foi encontrado.");
 			e.printStackTrace();
-			return new MelhorTempoHeroiDTO();
+			return ResponseEntity.status(404).build();
 		}
 	}
 
@@ -178,7 +180,7 @@ public class VoltaAoMundoService {
 		return melhorTempoHeroiDTO;
 	}
 
-	public Integer velMediaHeroi(String codHeroi) {
+	public ResponseEntity<Integer> velMediaHeroi(String codHeroi) {
 		int contador = 0;
 		int velMedia = 0;
 		List<Volta> todasAsVoltas = leArquivo();
@@ -190,11 +192,16 @@ public class VoltaAoMundoService {
 			velMedia += v.getVelMedia();
 		}
 
-		if (contador == 0)
-			return 0;
+		try {
 
-		return velMedia / contador;
+			if (contador == 0)
+				return ResponseEntity.status(400).body(0);
 
+			return ResponseEntity.status(200).body(velMedia / contador);
+
+		} catch (ArithmeticException e) {
+			return ResponseEntity.status(400).body(0);
+		}
 	}
 
 }

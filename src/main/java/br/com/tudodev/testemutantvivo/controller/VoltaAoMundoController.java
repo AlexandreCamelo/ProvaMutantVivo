@@ -28,7 +28,7 @@ public class VoltaAoMundoController {
 	
 	@GetMapping("melhorVolta/{codHeroi}")
 	public ResponseEntity<MelhorTempoHeroiDTO> melhorVolta(@PathVariable String codHeroi) {
-		return ResponseEntity.status(200).body(serv.melhorVoltaHeroi(codHeroi));
+		return serv.melhorVoltaHeroi(codHeroi);
 	}
 	
 	@GetMapping("melhorVoltaCorrida")
@@ -39,7 +39,7 @@ public class VoltaAoMundoController {
 	
 	@GetMapping("velMedia/{codHeroi}")
 	public ResponseEntity<Integer> velMedia(@PathVariable String codHeroi) {
-		return ResponseEntity.status(200).body(serv.velMediaHeroi(codHeroi));
+		return serv.velMediaHeroi(codHeroi);
 	}
 
 	

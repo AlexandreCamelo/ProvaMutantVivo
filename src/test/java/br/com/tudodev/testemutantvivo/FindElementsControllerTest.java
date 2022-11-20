@@ -18,7 +18,7 @@ public class FindElementsControllerTest {
 	@Autowired
 	FindElementsController findElem;
 	
-	int[] DEFAULT_PARAM = {1,2,3,4,5,6,7,8,9};
+	final int[] DEFAULT_PARAM = {1,2,3,4,5,6,7,8,9};
 	
 	@Test
 	@DisplayName("procurarElementos should be return status 200")
